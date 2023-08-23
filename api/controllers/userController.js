@@ -2,16 +2,7 @@ const { userService } = require("../services");
 const { catchAsync } = require("../utils/error");
 
 const signUp = catchAsync(async (req, res) => {
-  const {
-    email,
-    username,
-    password,
-    agreement1,
-    agreement2,
-    agreement3,
-    agreement4,
-    privateDataPeriod,
-  } = req.body;
+  const { email, username, password, agreement, privateDataPeriod } = req.body;
 
   if (!email || !username || !password || !privateDataPeriod) {
     const error = new Error("KEY_ERROR");
@@ -24,10 +15,7 @@ const signUp = catchAsync(async (req, res) => {
     email,
     username,
     password,
-    agreement1,
-    agreement2,
-    agreement3,
-    agreement4,
+    agreement,
     privateDataPeriod
   );
 

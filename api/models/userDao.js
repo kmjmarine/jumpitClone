@@ -83,10 +83,9 @@ const getUserById = async (id) => {
       `
         SELECT 
           id,
-          nickname,
           email,
-          password,
-          profile_image AS profileImage
+          username,
+          password
           FROM users
           WHERE id = ?
       `,
@@ -95,7 +94,7 @@ const getUserById = async (id) => {
 
     return result;
   } catch {
-    const error = new Error("dataSource Error");
+    const error = new Error("dataSource Error #getUserById");
     error.statusCode = 400;
 
     throw error;
