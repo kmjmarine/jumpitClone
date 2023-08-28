@@ -17,10 +17,7 @@ const signUp = async (
   email,
   username,
   password,
-  agreement1,
-  agreement2,
-  agreement3,
-  agreement4,
+  agreement,
   privateDataPeriod
 ) => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -46,10 +43,7 @@ const signUp = async (
     email,
     username,
     hashedPassword,
-    agreement1,
-    agreement2,
-    agreement3,
-    agreement4,
+    agreement,
     privateDataPeriod
   );
   return createUser;
@@ -87,10 +81,14 @@ const signIn = async (email, password) => {
     throw error;
   }
 
-  const accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    algorithm: process.env.ALGORITHM,
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
+  const accessToken = jwt.sign(
+    { id: user.id, email: user.email, username: user.username },
+    process.env.JWT_SECRET,
+    {
+      algorithm: process.env.ALGORITHM,
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    }
+  );
 
   return accessToken;
 };

@@ -4,10 +4,7 @@ const createUser = async (
   email,
   username,
   hashedPassword,
-  agreement1,
-  agreement2,
-  agreement3,
-  agreement4,
+  agreement,
   privateDataPeriod
 ) => {
   try {
@@ -17,15 +14,9 @@ const createUser = async (
           email, 
           username, 
           password,
-          agreement1,
-          agreement2,
-          agreement3,
-          agreement4,
+          agreement,
           private_data_period
         ) VALUES (
-          ?,
-          ?,
-          ?,
           ?,
           ?,
           ?,
@@ -33,16 +24,7 @@ const createUser = async (
           ?
         )
       `,
-      [
-        email,
-        username,
-        hashedPassword,
-        agreement1,
-        agreement2,
-        agreement3,
-        agreement4,
-        privateDataPeriod,
-      ]
+      [email, username, hashedPassword, agreement, privateDataPeriod]
     );
 
     return result;
@@ -61,6 +43,7 @@ const getUserByEmail = async (email) => {
         SELECT
           id,
           email,
+          username,
           password
         FROM users
         WHERE email = ?
