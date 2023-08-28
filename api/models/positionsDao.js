@@ -69,8 +69,7 @@ const getJobPostingDetail = async (jobpostingId) => {
       [jobpostingId]
     );
     return data;
-  } catch (err) {
-    console.log(err);
+  } catch {
     const error = new Error("dataSource Error #getJobPostingDetail");
     error.statusCode = 400;
 
@@ -87,8 +86,7 @@ const updateJobPostingHits = async (jobpostingId) => {
       [jobpostingId]
     );
     return data;
-  } catch (err) {
-    console.log(err);
+  } catch {
     const error = new Error("dataSource Error #updateJobPostingHits");
     error.statusCode = 400;
 

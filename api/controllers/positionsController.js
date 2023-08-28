@@ -2,10 +2,10 @@ const { positionsService } = require("../services");
 const { catchAsync } = require("../utils/error");
 
 const getAllJobData = catchAsync(async (req, res) => {
-  const jobtypes = await positionsService.getAllJobTypes();
-  const jobpostings = await positionsService.getAllJobPostings();
+  const jobTypes = await positionsService.getAllJobTypes();
+  const jobPostings = await positionsService.getAllJobPostings();
 
-  res.status(200).json({ jobTypes: jobtypes, jobPostings: jobpostings });
+  res.status(200).json({ jobTypes: jobTypes, jobPostings: jobPostings });
 });
 
 const getJobPostingDetail = catchAsync(async (req, res) => {
