@@ -145,8 +145,7 @@ const createResume = async (
     );
 
     return createResume.insertId;
-  } catch (err) {
-    console.log(err);
+  } catch {
     const error = new Error("dataSource Error #createResume");
     error.statusCode = 400;
 
