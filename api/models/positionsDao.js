@@ -5,10 +5,10 @@ const getAllJobTypes = async () => {
     const data = await dataSource.query(
       `
       SELECT 
-      id AS jobTypeId,
+      ordering AS jobTypeId,
       title AS jobTypeTitle
       FROM job_types
-      ORDER BY id ASC
+      ORDER BY ordering ASC
      `
     );
     return data;
