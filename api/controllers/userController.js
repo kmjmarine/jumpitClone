@@ -1,5 +1,6 @@
 const { userService } = require("../services");
 const { catchAsync } = require("../utils/error");
+const jwt = require("jsonwebtoken");
 
 const signUp = catchAsync(async (req, res) => {
   const { email, username, password, agreement, privateDataPeriod } = req.body;
@@ -39,8 +40,13 @@ const signIn = async (req, res) => {
 
   try {
     const accessToken = await userService.signIn(email, password);
+    const payload = await jwt.verify(accessToken, process.env.JWT_SECRET);
 
-    res.status(200).json({ accessToken });
+    res.status(200).json({
+      accessToken,
+      username: payload.username,
+      email: payload.email,
+    });
   } catch (error) {
     res.status(error.statusCode).json({ message: error.message });
   }
