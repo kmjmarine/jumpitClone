@@ -20,6 +20,56 @@ const getAllJobTypes = async () => {
   }
 };
 
+const getDynamicJobPage = async (jobCategories, ordering) => {
+  try {
+    let jobTypeQuery = "";
+    if (jobCategories != undefined) {
+      jobTypeQuery = `WHERE job_type_id IN (${jobCategories})`;
+    }
+
+    const orderingSwitch = async (ordering) => {
+      switch (ordering) {
+        case "reg_dt":
+          return `ORDER BY j.created_at DESC`;
+        case "popular":
+          return `ORDER BY j.hits DESC, j.id DESC`;
+        default:
+          return `ORDER BY j.id DESC`;
+      }
+    };
+    const orderingQuery = await orderingSwitch(ordering);
+
+    const data = await dataSource.query(
+      `
+      SELECT
+      j.id AS jobpostingId,
+      c.name AS companyName,
+      c.image AS companyImage,
+      j.title AS jobPostingTitle,
+      j.career,
+      j.work_area AS workArea
+      FROM job_postings j LEFT JOIN companies c
+      ON j.company_id = c.id
+      INNER JOIN
+		  (	
+			  SELECT job_posting_id
+			  FROM job_posting_job_types ${jobTypeQuery}
+        GROUP BY job_posting_id
+		  ) jt
+      ON jt.job_posting_id = j.id
+      ${orderingQuery}     
+      `
+    );
+    return data;
+  } catch (err) {
+    console.log(err);
+    const error = new Error("dataSource Error #getDynamicJobPage");
+    error.statusCode = 400;
+
+    throw error;
+  }
+};
+
 const getAllJobPostings = async () => {
   try {
     const data = await dataSource.query(
@@ -96,6 +146,7 @@ const updateJobPostingHits = async (jobpostingId) => {
 
 module.exports = {
   getAllJobTypes,
+  getDynamicJobPage,
   getAllJobPostings,
   getJobPostingDetail,
   updateJobPostingHits,

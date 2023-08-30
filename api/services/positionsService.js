@@ -4,8 +4,8 @@ const getAllJobTypes = async () => {
   return await positionsDao.getAllJobTypes();
 };
 
-const getAllJobPostings = async () => {
-  return await positionsDao.getAllJobPostings();
+const getDynamicJobPage = async (jobCategories, ordering) => {
+  return await positionsDao.getDynamicJobPage(jobCategories, ordering);
 };
 
 const getJobPostingDetail = async (jobpostingId) => {
@@ -15,6 +15,6 @@ const getJobPostingDetail = async (jobpostingId) => {
 
 module.exports = {
   getAllJobTypes,
-  getAllJobPostings,
+  getDynamicJobPage,
   getJobPostingDetail,
 };
