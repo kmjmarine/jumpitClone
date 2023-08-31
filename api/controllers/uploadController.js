@@ -10,13 +10,14 @@ const upload = catchAsync(async (req, res) => {
 
   form.parse(req, (error, fields, files) => {
     if (!error) {
-      const path = files.fileInput[0].path;
+      const paths = files.fileInput[0].path;
+
       res.status(200).json({
         message: "'upload complete'",
-        path: `/static/uploads${path.substr(path.lastIndexOf("/"))}`,
+        path: paths,
       });
     } else {
-      res.json(error);
+      res.json(error.message);
     }
   });
 });

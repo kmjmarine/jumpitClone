@@ -20,15 +20,17 @@ const getSingleResume = catchAsync(async (req, res) => {
 const createResume = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const {
+    birthday,
+    phoneNumber,
     title,
     display,
     githubUrl,
     notionUrl,
     blogUrl,
-    educations,
-    careers,
-    projects,
-    addfiles,
+    resumeEducation,
+    resumeCareer,
+    resumeProject,
+    resumeAddFile,
   } = req.body;
 
   if (!userId) {
@@ -40,6 +42,8 @@ const createResume = catchAsync(async (req, res) => {
 
   const resumeId = await resumeService.createResume(
     userId,
+    birthday,
+    phoneNumber,
     title,
     display,
     githubUrl,
@@ -53,12 +57,68 @@ const createResume = catchAsync(async (req, res) => {
     }
   };
 
-  await createSectionIfDataExists(educations, resumeService.createEducation);
-  await createSectionIfDataExists(careers, resumeService.createCareer);
-  await createSectionIfDataExists(projects, resumeService.createProject);
-  await createSectionIfDataExists(addfiles, resumeService.createAddFile);
+  await createSectionIfDataExists(
+    resumeEducation,
+    resumeService.createEducation
+  );
+  await createSectionIfDataExists(resumeCareer, resumeService.createCareer);
+  await createSectionIfDataExists(resumeProject, resumeService.createProject);
+  await createSectionIfDataExists(resumeAddFile, resumeService.createAddFile);
 
   res.status(201).json({ resumeId });
+});
+
+const updateResume = catchAsync(async (req, res) => {
+  const { resumeId } = req.params;
+  const userId = req.user.id;
+  const {
+    birthday,
+    phoneNumber,
+    title,
+    display,
+    githubUrl,
+    notionUrl,
+    blogUrl,
+    resumeEducation,
+    resumeCareer,
+    resumeProject,
+    resumeAddFile,
+  } = req.body;
+
+  if (!userId) {
+    const error = new Error("KEY_ERROR");
+    error.statusCode = 400;
+
+    throw error;
+  }
+
+  await resumeService.updateResume(
+    resumeId,
+    userId,
+    birthday,
+    phoneNumber,
+    title,
+    display,
+    githubUrl,
+    notionUrl,
+    blogUrl
+  );
+
+  const updateSectionIfDataExists = async (data, updateFunction) => {
+    if (resumeId && data) {
+      await updateFunction(resumeId, data);
+    }
+  };
+
+  await updateSectionIfDataExists(
+    resumeEducation,
+    resumeService.updateEducation
+  );
+  await updateSectionIfDataExists(resumeCareer, resumeService.updateCareer);
+  await updateSectionIfDataExists(resumeProject, resumeService.updateProject);
+  await updateSectionIfDataExists(resumeAddFile, resumeService.updateAddFile);
+
+  res.status(200).json({ resumeId });
 });
 
 const deleteResume = catchAsync(async (req, res) => {
@@ -82,6 +142,7 @@ module.exports = {
   getAllResumes,
   getSingleResume,
   createResume,
+  updateResume,
   deleteResume,
   deleteAddFile,
 };
