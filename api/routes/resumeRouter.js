@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("", loginRequired, resumeController.getAllResumes);
 router.get("/:resumeId", loginRequired, resumeController.getSingleResume);
 router.post("", loginRequired, resumeController.createResume);
+router.patch("/:resumeId", loginRequired, resumeController.updateResume);
 router.delete("/:resumeId", loginRequired, resumeController.deleteResume);
 router.delete(
   "/addfiles/:resumeId/:fileId",

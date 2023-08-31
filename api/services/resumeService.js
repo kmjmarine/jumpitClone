@@ -6,6 +6,8 @@ const getAllResumes = async (user) => {
 
 const createResume = async (
   userId,
+  birthday,
+  phoneNumber,
   title,
   display,
   githubUrl,
@@ -14,6 +16,8 @@ const createResume = async (
 ) => {
   return await resumeDao.createResume(
     userId,
+    birthday,
+    phoneNumber,
     title,
     display,
     githubUrl,
@@ -42,6 +46,46 @@ const createAddFile = async (resumeId, addfiles) => {
   return await resumeDao.createAddFile(resumeId, addfiles);
 };
 
+const updateResume = async (
+  resumeId,
+  userId,
+  birthday,
+  phoneNumber,
+  title,
+  display,
+  githubUrl,
+  notionUrl,
+  blogUrl
+) => {
+  return await resumeDao.updateResume(
+    resumeId,
+    userId,
+    birthday,
+    phoneNumber,
+    title,
+    display,
+    githubUrl,
+    notionUrl,
+    blogUrl
+  );
+};
+
+const updateEducation = async (resumeId, educations) => {
+  return await resumeDao.updateEducation(resumeId, educations);
+};
+
+const updateCareer = async (resumeId, careers) => {
+  return await resumeDao.updateCareer(resumeId, careers);
+};
+
+const updateProject = async (resumeId, projects) => {
+  return await resumeDao.updateProject(resumeId, projects);
+};
+
+const updateAddFile = async (resumeId, addfiles) => {
+  return await resumeDao.updateAddFile(resumeId, addfiles);
+};
+
 const deleteResume = async (userId, resumeId) => {
   return await resumeDao.deleteResume(userId, resumeId);
 };
@@ -58,6 +102,11 @@ module.exports = {
   createCareer,
   createProject,
   createAddFile,
+  updateResume,
+  updateEducation,
+  updateCareer,
+  updateProject,
+  updateAddFile,
   deleteResume,
   deleteAddFile,
 };
